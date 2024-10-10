@@ -5,27 +5,25 @@
 using namespace godot;
 
 class Player : public Area2D {
-	GDCLASS(Player, Area2D)
+    GDCLASS(Player, Area2D)
 
 private:
-	int speed;
-	Size2 screenSize;
+    int speed;
+    Size2 screenSize;
 
-	static void _bind_methods() {
-		ClassDB::bind_method(D_METHOD("getSpeed"), &Player::getSpeed);
-		ClassDB::bind_method(D_METHOD("setSpeed", "speed"), &Player::setSpeed);
-		ADD_PROPERTY(PropertyInfo(Variant::INT, "speed"), "setSpeed", "getSpeed");
-	}
+    static void _bind_methods();
 public:
-	Player();
-	~Player() = default;
+    Player();
+    ~Player() = default;
 
-	// signals
-	void setSpeed(const int pSpeed); 
-	int getSpeed() const; 
+    void start(Vector2 position);
 
-	// engine binding
-	void _ready() override;
-	void _process(double) override;
-	void _on_body_entered(Node2D) override;
+    // signals
+    void setSpeed(const int);
+    int getSpeed() const;
+    void _onBodyEntered(Node2D *node);
+
+    // engine binding
+    void _ready() override;
+    void _process(double) override;
 };

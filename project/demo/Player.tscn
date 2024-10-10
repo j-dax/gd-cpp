@@ -35,13 +35,17 @@ radius = 54.0
 height = 136.0
 
 [node name="Player" type="Player"]
+position = Vector2(2, 2)
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_k18uf")
-animation = &"walk"
+animation = &"up"
+flip_v = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(0.5, 0.5)
 shape = SubResource("CapsuleShape2D_61hdy")
+
+[connection signal="body_entered" from="." to="." method="_onBodyEntered"]
