@@ -6,40 +6,27 @@
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include "random-sprite/random-sprite.h"
 #include "player/player.h"
 #include "mob/mob.h"
 #include "scene/main.h"
 
 using namespace godot;
 
-void gdextension_initialize(ModuleInitializationLevel p_level)
-{
+void gdextension_initialize(ModuleInitializationLevel p_level) {
     if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE)
     {
-        ClassDB::register_class<RandomSprite>();
         ClassDB::register_class<Player>();
         ClassDB::register_class<Mob>();
         ClassDB::register_class<Main>();
-        // ClassDB::register_class<MySingleton>();
-        // _my_singleton = memnew(MySingleton);
-        // Engine::get_singleton()->register_singleton("MySingleton", MySingleton::get_singleton());
     }
 }
 
-void gdextension_terminate(ModuleInitializationLevel p_level)
-{
-    if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE)
-    {
-        // Engine::get_singleton()->unregister_singleton("MySingleton");
-        // memdelete(_my_singleton);
-    }
+void gdextension_terminate(ModuleInitializationLevel p_level) {
+    if (p_level == MODULE_INITIALIZATION_LEVEL_SCENE) {}
 }
 
-extern "C"
-{
-    GDExtensionBool GDE_EXPORT gdextension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization)
-    {
+extern "C" {
+    GDExtensionBool GDE_EXPORT gdextension_init(GDExtensionInterfaceGetProcAddress p_get_proc_address, GDExtensionClassLibraryPtr p_library, GDExtensionInitialization *r_initialization) {
         godot::GDExtensionBinding::InitObject init_obj(p_get_proc_address, p_library, r_initialization);
 
         init_obj.register_initializer(gdextension_initialize);

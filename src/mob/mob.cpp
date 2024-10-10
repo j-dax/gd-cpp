@@ -6,10 +6,11 @@
 
 void Mob::_bind_methods() {
     ADD_SIGNAL(MethodInfo("screen_exited"));
-    ClassDB::bind_method(D_METHOD("emit_screen_exited"), &Mob::_onScreenLeave);
+    ClassDB::bind_method(D_METHOD("_onScreenLeave", "node"), &Mob::_onScreenLeave);
 }
 
 Mob::Mob() {
+    connect("screen_exited", Callable(this, "_onScreenLeave"));
 }
 
 void Mob::start(Vector2 position) {
