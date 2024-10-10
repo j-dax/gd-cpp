@@ -6,9 +6,10 @@
 #include <godot_cpp/classes/engine.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include "player/player.h"
-#include "mob/mob.h"
+#include "entity/player.h"
+#include "entity/mob.h"
 #include "scene/main.h"
+#include "scene/hud.h"
 
 using namespace godot;
 
@@ -18,6 +19,7 @@ void gdextension_initialize(ModuleInitializationLevel p_level) {
         ClassDB::register_class<Player>();
         ClassDB::register_class<Mob>();
         ClassDB::register_class<Main>();
+        ClassDB::register_class<Hud>();
     }
 }
 

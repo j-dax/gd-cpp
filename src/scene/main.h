@@ -9,8 +9,8 @@ class Main : public Node {
     GDCLASS(Main, Node)
 
 private:
-    Ref<PackedScene> mobScene;
-    int _score;
+    Ref<PackedScene> mob_scene;
+    int score;
 
     static void _bind_methods();
 public:
@@ -18,15 +18,15 @@ public:
     ~Main() = default;
 
     // engine bindings
-    Ref<PackedScene> getMobScene();
-    void setMobScene(Ref<PackedScene> pScene);
-    void gameOver();
-    void newGame();
+    Ref<PackedScene> get_mob_scene();
+    void set_mob_scene(Ref<PackedScene>);
+    void game_over();
+    void new_game();
 
     // signal receivers
-    void onScoreTimerTimeout();
-    void onStartTimerTimeout();
-    void onMobTimerTimeout();
+    void _on_score_timer_timeout();
+    void _on_start_timer_timeout();
+    void _on_mob_timer_timeout();
 
-    void _ready() override;
+    // void _ready() override;
 };

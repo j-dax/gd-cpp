@@ -9,18 +9,15 @@ class Mob : public RigidBody2D {
     GDCLASS(Mob, RigidBody2D)
 
 private:
-    int speed;
-    Size2 screenSize;
-
     static void _bind_methods();
 public:
     Mob();
     ~Mob() = default;
 
-    void start(Vector2 position);
+    void start(Vector2 position, float rotation);
 
     // signals
-    void _onScreenLeave();
+    void _on_screen_leave();
 
     // engine binding
     void _ready() override;

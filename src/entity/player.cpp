@@ -9,24 +9,27 @@
 using namespace godot;
 
 void Player::_bind_methods() {
-    ClassDB::bind_method(D_METHOD("getSpeed"), &Player::getSpeed);
-    ClassDB::bind_method(D_METHOD("setSpeed", "speed"), &Player::setSpeed);
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "speed"), "setSpeed", "getSpeed");
+    // expose speed in the editor
+    ClassDB::bind_method(D_METHOD("get_speed"), &Player::get_speed);
+    ClassDB::bind_method(D_METHOD("set_speed", "speed"), &Player::set_speed);
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "speed"), "set_speed", "get_speed");
 
-    ADD_SIGNAL(MethodInfo(PropertyInfo(Variant::OBJECT, "node"), "player_hit"));
-    ClassDB::bind_method(D_METHOD("_onBodyEntered", "node"), &Player::_onBodyEntered);
+    // Hook this up
+    ClassDB::bind_method(D_METHOD("_on_body_entered", "node"), &Player::_on_body_entered);
+
+    // the signal to emit when the player collides with a Mob
+    ADD_SIGNAL(MethodInfo("player_hit"));
 }
 
 Player::Player() {
     speed = 400;
-    connect("player_hit", Callable(this, "_onBodyEntered"));
 }
 
-void Player::setSpeed(const int pSpeed) {
+void Player::set_speed(const int pSpeed) {
     speed = pSpeed;
 }
 
-int Player::getSpeed() const {
+int Player::get_speed() const {
     return speed;
 }
 
@@ -44,7 +47,7 @@ void Player::_ready() {
 
     start(get_position());
 
-    screenSize = get_viewport_rect().size;
+    screen_size = get_viewport_rect().size;
 }
 
 void Player::_process(double delta) {
@@ -63,34 +66,35 @@ void Player::_process(double delta) {
         velocity.x += 1;
     }
 
-    auto animatedSprite2D = Node::get_node<AnimatedSprite2D>("AnimatedSprite2D");
+    auto animated_sprite_2d = Node::get_node<AnimatedSprite2D>("AnimatedSprite2D");
     if (velocity.x != 0) {
-        animatedSprite2D->set_animation("walk");
-        animatedSprite2D->set_flip_v(false);
-        animatedSprite2D->set_flip_h(velocity.x < 0);
+        animated_sprite_2d->set_animation("walk");
+        animated_sprite_2d->set_flip_v(false);
+        animated_sprite_2d->set_flip_h(velocity.x < 0);
     } else if (velocity.y != 0) {
-        animatedSprite2D->set_animation("up");
-        animatedSprite2D->set_flip_v(velocity.y > 0);
+        animated_sprite_2d->set_animation("up");
+        animated_sprite_2d->set_flip_v(velocity.y > 0);
     }
 
     if (velocity.length() > 0) {
         velocity = velocity.normalized() * speed;
-        animatedSprite2D->play();
+        animated_sprite_2d->play();
     } else {
-        animatedSprite2D->stop();
+        animated_sprite_2d->stop();
     }
 
-    auto newPosition = get_position();
-    newPosition += velocity * delta;
+    auto new_position = get_position();
+    new_position += velocity * delta;
 
-    newPosition.x = Math::clamp(newPosition.x, 0.0f, screenSize.x);
-    newPosition.y = Math::clamp(newPosition.y, 0.0f, screenSize.y);
+    new_position.x = Math::clamp(new_position.x, 0.0f, screen_size.x);
+    new_position.y = Math::clamp(new_position.y, 0.0f, screen_size.y);
 
-    set_position(newPosition);
+    set_position(new_position);
 }
 
-void Player::_onBodyEntered(Node2D *node) {
+void Player::_on_body_entered(Node2D *node) {
     hide();
-    // emit signal is connected in the editor
     get_node<CollisionShape2D>("CollisionShape2D")->set_deferred(StringName("set_disabled"), true);
+    // let listeners respond to hit
+    emit_signal("player_hit");
 }

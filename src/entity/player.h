@@ -9,7 +9,7 @@ class Player : public Area2D {
 
 private:
     int speed;
-    Size2 screenSize;
+    Size2 screen_size;
 
     static void _bind_methods();
 public:
@@ -19,9 +19,9 @@ public:
     void start(Vector2 position);
 
     // signals
-    void setSpeed(const int);
-    int getSpeed() const;
-    void _onBodyEntered(Node2D *node);
+    void set_speed(const int);
+    int get_speed() const;
+    void _on_body_entered(Node2D *node);
 
     // engine binding
     void _ready() override;
