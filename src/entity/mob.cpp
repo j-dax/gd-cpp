@@ -17,12 +17,11 @@ void Mob::start(Vector2 position, float rotation) {
     // FIXME: send the mob in an actual random direction, rather than
     // whatever this shit is
     auto direction = rotation + godot::Math::deg_to_rad(90.0);
-    direction += UtilityFunctions::randf_range(-godot::Math::deg_to_rad(45.0), godot::Math::deg_to_rad(45.0));
+    direction += UtilityFunctions::randf_range(godot::Math::deg_to_rad(-45.0), godot::Math::deg_to_rad(45.0));
     set_global_rotation(direction);
 
     auto velocity = Vector2(UtilityFunctions::randf_range(150.0, 250.0), 0);
-    set_linear_velocity(velocity);
-
+    set_linear_velocity(velocity.rotated(direction));
 }
 
 void Mob::_on_screen_leave() {
