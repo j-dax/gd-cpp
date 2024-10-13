@@ -17,3 +17,7 @@ godot-cpp/
 # generated files
 *.os
 *.so
+
+# export files
+project/bin/
+project/export_presets.cfg
